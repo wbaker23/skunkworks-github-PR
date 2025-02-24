@@ -15,6 +15,8 @@ jobs:
       - name: Create feature branch
         id: create-branch
         run: |
+          git config --global user.name 'dummy'
+          git config --global user.email 'dummy@users.noreply.github.com'
           BRANCH_NAME="testing-$(date +%Y%m%d%H%M%S)"
           git checkout -b $BRANCH_NAME
           echo "::set-output name=branch_name::$BRANCH_NAME"
