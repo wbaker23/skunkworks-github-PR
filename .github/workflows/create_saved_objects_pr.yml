@@ -59,5 +59,7 @@ jobs:
           echo "::set-output name=pr_url::$PR_CREATE_OUTPUT"
 
       - name: Merge Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr merge ${{ steps.create-pull-request.outputs.pr_url }}
