@@ -50,11 +50,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_CREATE_OUTPUT=$(gh pr create --title "Content update from ${{ steps.create-branch.outputs.branch_name }}" --body "This PR was created automatically by GitHub Actions." --base main --head ${{ steps.create-branch.outputs.branch_name }})
-          PR_NUMBER=$(echo "$PR_CREATE_OUTPUT" | grep -oE '\d+$')
-          echo "::set-output name=pr_url::$PR_CREATE_OUTPUT"
+          echo "::set-output name=pr-url::$PR_CREATE_OUTPUT"
 
       - name: Merge Pull Request
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr merge ${{ steps.create-pull-request.outputs.pr_url }}
+          gh pr merge ${{ steps.create-pull-request.outputs.pr-url }}
