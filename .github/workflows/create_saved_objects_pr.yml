@@ -17,7 +17,8 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           BRANCH_NAME="testing-$(date +%Y%m%d%H%M%S)"
-          git checkout -b $BRANCH_NAME echo "::set-output name=branch_name::$BRANCH_NAME"
+          git checkout -b $BRANCH_NAME
+          echo "::set-output name=branch_name::$BRANCH_NAME"
       - name: Run script
         run: |
           echo "$(date +%Y%m%d%H%M%S)" > data.txt
@@ -26,7 +27,12 @@ jobs:
         id: check-for-changes
         run: |
           if git diff --quiet HEAD -- ./data.txt; then
-            echo "No changes in ./data.txt" echo "::set-output name=changes-detected::false" else echo "Changes detected in ./data.txt" echo "::set-output name=changes-detected::true" fi
+            echo "No changes in ./data.txt"
+            echo "::set-output name=changes-detected::false"
+          else
+            echo "Changes detected in ./data.txt"
+            echo "::set-output name=changes-detected::true"
+          fi
       - name: Commit changes
         if: steps.check-for-changes.outputs.changes-detected == 'true'
         run: |
