@@ -52,5 +52,5 @@ jobs:
         run: |
           gh pr create --title "Content update from ${{ steps.create-branch.outputs.branch_name }}" \
                       --body "This PR was created automatically by GitHub Actions." \
-                      --base dev \
+                      --base main \
                       --head ${{ steps.create-branch.outputs.branch_name }}
