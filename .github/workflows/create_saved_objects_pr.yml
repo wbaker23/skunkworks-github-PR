@@ -56,4 +56,4 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr merge ${{ steps.create-pull-request.outputs.pr-url }}
+          gh pr merge ${{ steps.create-pull-request.outputs.pr-url }} --rebase
