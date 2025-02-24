@@ -49,10 +49,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PR_CREATE_OUTPUT=$(gh pr create --title "Content update from ${{ steps.create-branch.outputs.branch_name }}" \
-                      --body "This PR was created automatically by GitHub Actions." \
-                      --base main \
-                      --head ${{ steps.create-branch.outputs.branch_name }})
+          PR_CREATE_OUTPUT=$(gh pr create --title "Content update from ${{ steps.create-branch.outputs.branch_name }}" --body "This PR was created automatically by GitHub Actions." --base main --head ${{ steps.create-branch.outputs.branch_name }})
           PR_NUMBER=$(echo "$PR_CREATE_OUTPUT" | grep -oE '\d+$')
           echo "::set-output name=pr_url::$PR_CREATE_OUTPUT"
 
