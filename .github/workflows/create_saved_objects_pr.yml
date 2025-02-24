@@ -9,23 +9,26 @@ jobs:
         uses: actions/checkout@v4
       - name: Install dependencies
         run: |
-          echo "My github user is ${{ github.actor }}"
+          echo "github.actor: ${{ github.actor }}"
+          echo "github.triggering_actor: ${{ github.triggering_actor }}"
 
       - name: Create feature branch
         id: create-branch
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           BRANCH_NAME="testing-$(date +%Y%m%d%H%M%S)"
           git checkout -b $BRANCH_NAME
           echo "::set-output name=branch_name::$BRANCH_NAME"
       - name: Run script
         run: |
           echo "$(date +%Y%m%d%H%M%S)" > data.txt
+          pwd
+          ls -al
 
       - name: Check for changes
         id: check-for-changes
         run: |
+          pwd
+          ls -al
           if git diff --quiet HEAD -- ./data.txt; then
             echo "No changes in ./data.txt"
             echo "::set-output name=changes-detected::false"
