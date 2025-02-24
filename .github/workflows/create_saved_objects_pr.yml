@@ -29,18 +29,18 @@ jobs:
       - name: Check for changes
         id: check-for-changes
         run: |
-          git diff HEAD -- data.txt
-          if git diff --quiet HEAD -- data.txt; then
+          git diff
+          if git diff --quiet; then
             echo "Changes detected in data.txt"
             echo "::set-output name=changes-detected::true"
           else
-            echo "No changes in ./data.txt"
+            echo "No changes in data.txt"
             echo "::set-output name=changes-detected::false"
           fi
       - name: Commit changes
         if: steps.check-for-changes.outputs.changes-detected == 'true'
         run: |
-          git add ./data.txt
+          git add data.txt
           git commit -m "Run work script and commit changes"
           git push origin ${{ steps.create-branch.outputs.branch_name }}
           
