@@ -30,11 +30,11 @@ jobs:
           pwd
           ls -al
           if git diff --quiet HEAD -- ./data.txt; then
-            echo "No changes in ./data.txt"
-            echo "::set-output name=changes-detected::false"
-          else
             echo "Changes detected in ./data.txt"
             echo "::set-output name=changes-detected::true"
+          else
+            echo "No changes in ./data.txt"
+            echo "::set-output name=changes-detected::false"
           fi
       - name: Commit changes
         if: steps.check-for-changes.outputs.changes-detected == 'true'
