@@ -1,0 +1,45 @@
+name: Kibana saved objects CI
+'on':
+  workflow_dispatch: null
+jobs:
+  create-saved-objects-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          echo "My github user is ${{ github.actor }}"
+
+      - name: Create feature branch
+        id: create-branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          BRANCH_NAME="testing-$(date +%Y%m%d%H%M%S)"
+          git checkout -b $BRANCH_NAME echo "::set-output name=branch_name::$BRANCH_NAME"
+      - name: Run script
+        run: |
+          echo "$(date +%Y%m%d%H%M%S)" > data.txt
+
+      - name: Check for changes
+        id: check-for-changes
+        run: |
+          if git diff --quiet HEAD -- ./data.txt; then
+            echo "No changes in ./data.txt" echo "::set-output name=changes-detected::false" else echo "Changes detected in ./data.txt" echo "::set-output name=changes-detected::true" fi
+      - name: Commit changes
+        if: steps.check-for-changes.outputs.changes-detected == 'true'
+        run: |
+          git add ./data.txt
+          git commit -m "Run work script and commit changes"
+          git push origin ${{ steps.create-branch.outputs.branch_name }}
+          
+      - name: Create Pull Request
+        if: steps.check-for-changes.outputs.changes-detected == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --title "Content update from ${{ steps.create-branch.outputs.branch_name }}" \
+                      --body "This PR was created automatically by GitHub Actions." \
+                      --base dev \
+                      --head ${{ steps.create-branch.outputs.branch_name }}
