@@ -29,13 +29,12 @@ jobs:
       - name: Check for changes
         id: check-for-changes
         run: |
-          git diff
           if git diff --quiet; then
-            echo "Changes detected in data.txt"
-            echo "::set-output name=changes-detected::true"
-          else
             echo "No changes in data.txt"
             echo "::set-output name=changes-detected::false"
+          else
+            echo "Changes detected in data.txt"
+            echo "::set-output name=changes-detected::true"
           fi
       - name: Commit changes
         if: steps.check-for-changes.outputs.changes-detected == 'true'
