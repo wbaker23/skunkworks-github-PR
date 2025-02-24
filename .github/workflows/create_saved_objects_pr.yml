@@ -22,15 +22,13 @@ jobs:
           echo "::set-output name=branch_name::$BRANCH_NAME"
       - name: Run script
         run: |
+          cat data.txt
           echo "$(date +%Y%m%d%H%M%S)" > data.txt
-          pwd
-          ls -al
+          cat data.txt
 
       - name: Check for changes
         id: check-for-changes
         run: |
-          pwd
-          ls -al
           if git diff --quiet HEAD -- ./data.txt; then
             echo "Changes detected in ./data.txt"
             echo "::set-output name=changes-detected::true"
