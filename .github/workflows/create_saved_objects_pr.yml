@@ -56,5 +56,5 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr review https://github.com/wbaker23/skunkworks-github-PR/pull/8 --approve
+          gh pr review ${{ steps.create-pull-request.outputs.pr-url }} --approve
           #gh pr merge ${{ steps.create-pull-request.outputs.pr-url }} --rebase
