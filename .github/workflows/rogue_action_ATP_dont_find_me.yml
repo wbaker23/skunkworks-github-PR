@@ -3,9 +3,7 @@ name: Remove data.txt if exists
 on:
   push:
     branches:
-      - main
-  pull_request:
-    types: [closed]
+      - rpendergraph-patch-2
   workflow_dispatch:
 
 jobs:
